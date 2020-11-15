@@ -15,10 +15,9 @@ for path_block in $(/usr/bin/find /sys/class/block -type l -name "[s|v]d[a-z]");
       logicalvolume=$(pvs "${device_path}"|sed 1d|awk '{print $2}'|head -n 1|xargs -I {} lvs {}|sed 1d|head -n 1|awk '{print "/dev/"$2"/"$1}')
       /sbin/pvresize "${device_path}"
       /sbin/lvextend -l +99%FREE "${logicalvolume}"
-      /sbin/resize2fs "${logicalvolume}"
-    else
-      /sbin/resize2fs "${device_path}"
+      device_path="${logicalvolume}"
     fi
+    /sbin/resize2fs "${device_path}"
     cat "${path_block}/size" > "${device_size}"
    fi
 done
