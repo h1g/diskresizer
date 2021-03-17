@@ -1,5 +1,6 @@
 #!/bin/bash
 
+export PATH=/usr/sbin:/usr/bin:/sbin:/bin
 for path_block in $(/usr/bin/find /sys/class/block -type l -name "[s|v]d[a-z]"); do
   device_name=$(basename "${path_block}")
   device_size="/tmp/${device_name}_size"
@@ -19,5 +20,5 @@ for path_block in $(/usr/bin/find /sys/class/block -type l -name "[s|v]d[a-z]");
     fi
     /sbin/resize2fs "${device_path}"
     cat "${path_block}/size" > "${device_size}"
-   fi
+  fi
 done
